@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+:root {
+  --background: #09090B;
+  --foreground: #FAFAFA;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  --color-secondary-bg: #111118;
+  --color-card: #13131A;
+  --color-border-custom: #27272A;
+  --color-primary-purple: #7C3AED;
+  --color-secondary-purple: #A855F7;
+  --color-accent-blue: #2563EB;
+  --color-primary-text: #FAFAFA;
+  --color-secondary-text: #A1A1AA;
+  --color-success: #22C55E;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- NOISE/GRAIN OVERLAY --- */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.015"/%3E%3C/svg%3E') repeat;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: -10;
+  animation: grainNoise 8s steps(10) infinite;
+}
+
+@keyframes grainNoise {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+/* --- MOTION DESIGN DESIGN SYSTEM --- */
+
+/* Cinematic Hero Reveal */
+@keyframes cinematicReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-cinematic {
+  opacity: 0;
+  animation: cinematicReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Line Mask text reveals */
+.mask-reveal-container {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.mask-reveal-line {
+  display: block;
+  transform: translateY(100%);
+  animation: maskReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes maskReveal {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Spring button reveals */
+@keyframes buttonSpringIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(10px);
+  }
+  70% {
+    transform: scale(1.03) translateY(-1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.btn-spring-in {
+  opacity: 0;
+  animation: buttonSpringIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Card lift and 3D tilts */
+.card-hover-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.card-hover-lift:hover {
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 4px 20px rgba(124, 58, 237, 0.05);
+}
+
+/* Magnetic button helper */
+.btn-premium {
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium:hover {
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);
+}
+
+/* Underline link sliding */
+.nav-link {
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Soft glow hovers */
+.badge-glow-hover {
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badge-glow-hover:hover {
+  transform: translateY(-1px);
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.18);
+}
+
+/* Alternating Results reveals */
+.card-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideInResult 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.card-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideInResult 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes slideInResult {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Features reveal card by card with soft spring and small scale */
+.features-reveal-item {
+  opacity: 0;
+  transform: scale(0.94) translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: var(--delay, 0ms);
+  will-change: transform;
+}
+
+.reveal-container.revealed .features-reveal-item {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Storytelling step reveals */
+.step-reveal-item {
+  opacity: 0;
+  transform: translateY(30px) scale(0.96);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay, 0ms);
+  will-change: transform;
+}
+
+.reveal-container.revealed .step-reveal-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Connecting timeline drawing line */
+@media (min-width: 1024px) {
+  .how-grid-container {
+    position: relative;
+  }
+  .how-grid-container::before {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 10%;
+    right: 10%;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--color-primary-purple), var(--color-accent-blue));
+    z-index: 0;
+    opacity: 0.2;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 150ms;
+  }
+  .revealed .how-grid-container::before {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 1023px) {
+  .how-grid-container {
+    position: relative;
+  }
+  .how-grid-container::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 5%;
+    bottom: 5%;
+    width: 1.5px;
+    background: linear-gradient(180deg, var(--color-primary-purple), var(--color-accent-blue));
+    z-index: 0;
+    opacity: 0.2;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 150ms;
+  }
+  .revealed .how-grid-container::before {
+    transform: scaleY(1);
+  }
+}
+
+/* Scroll reveal container defaults */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+.reveal-container.revealed .reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accessibility settings mapping */
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    animation: none !important;
+  }
+  .hero-cinematic,
+  .mask-reveal-line,
+  .btn-spring-in,
+  .features-reveal-item,
+  .step-reveal-item,
+  .reveal-item {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .how-grid-container::before {
+    display: none !important;
+  }
+  .card-hover-lift,
+  .btn-premium,
+  .badge-glow-hover {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+
